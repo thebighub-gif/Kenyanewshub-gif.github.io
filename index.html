@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya News Hub - Aggregated Kenyan News</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff7b00;
+            --secondary-color: #333;
+            --text-color: #333;
+            --light-text: #666;
+            --lighter-text: #999;
+            --bg-color: #f5f5f5;
+            --card-bg: #fff;
+            --border-color: #eee;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 25px;
+            position: relative;
+            max-width: 600px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px 45px 10px 15px;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .search-bar button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-actions a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-actions a i {
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: white;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        nav {
+            background-color: var(--card-bg);
+            padding: 12px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 56px;
+            z-index: 999;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .nav-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .category {
+            padding: 8px 16px;
+            margin-right: 8px;
+            border-radius: 18px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        
+        .category:hover {
+            background-color: rgba(255, 123, 0, 0.1);
+        }
+        
+        .category.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 25px;
+        }
+        
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .breaking-news {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .see-all {
+            color: var(--primary-color);
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .see-all i {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+        
+        .breaking-news-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .breaking-news-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .breaking-news-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .breaking-news-item img {
+            width: 100px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 15px;
+            background-color: #f5f5f5;
+        }
+        
+        .breaking-news-content h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .breaking-news-meta {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: var(--light-text);
+        }
+        
+        .breaking-news-meta span {
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .breaking-news-meta i {
+            margin-right: 3px;
+            font-size: 10px;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .news-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .news-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #f5f5f5;
+        }
+        
+        .news-content {
+            padding: 15px;
+        }
+        
+        .news-category {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .news-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+        
+        .news-excerpt {
+            font-size: 14px;
+            color: var(--light-text);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--lighter-text);
+        }
+        
+        .news-source {
+            display: flex;
+            align-items: center;
+        }
+        
+        .news-source img {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .trending-topics {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .topic-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+        
+        .topic-item:last-child {
+            border-bottom: none;
+        }
+        
+        .topic-number {
+            font-weight: 700;
+            color: var(--light-text);
+            margin-right: 15px;
+            font-size: 16px;
+        }
+        
+        .topic-content h4 {
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        
+        .topic-meta {
+            font-size: 12px;
+            color: var(--lighter-text);
+        }
+        
+        .ai-recommendation {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3px 10px;
+            border-bottom-left-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .ai-recommendation h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .recommended-article {
+            display: flex;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .recommended-article:last-child {
+            margin-bottom: 0;
+        }
+        
+        .recommended-article img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 10px;
+            background-color: #f5f5f5;
+        }
+        
+        .recommended-content h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .recommended-meta {
+            font-size: 11px;
+            color: var(--lighter-text);
+        }
+        
+        .weather-widget {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .weather-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .weather-location {
+            font-weight: 600;
+        }
+        
+        .weather-refresh {
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .weather-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .weather-temp {
+            font-size: 36px;
+            font-weight: 300;
+            margin-right: 10px;
+        }
+        
+        .weather-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+        }
+        
+        .weather-desc {
+            font-size: 14px;
+            color: var(--light-text);
+            margin-bottom: 15px;
+        }
+        
+        .weather-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+        }
+        
+        .weather-detail {
+            display: flex;
+            align-items: center;
+        }
+        
+        .weather-detail i {
+            margin-right: 5px;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+        
+        .newsletter {
+            background: linear-gradient(135deg, var(--primary-color), #ff5500);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .newsletter h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .newsletter p {
+            font-size: 14px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .newsletter input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: none;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .newsletter button {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .newsletter button:hover {
+            background-color: #f0f0f0;
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .footer-social a {
+            color: white;
+            font-size: 18px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #444;
+            font-size: 13px;
+            color: #aaa;
+        }
+        
+        @media (max-width: 992px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                grid-row: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .logo {
+                order: 1;
+                margin-bottom: 10px;
+            }
+            
+            .search-bar {
+                order: 3;
+                margin: 10px 0 0;
+                width: 100%;
+            }
+            
+            .user-actions {
+                order: 2;
+                margin-left: auto;
+            }
+            
+            .user-actions a span {
+                display: none;
+            }
+            
+            .user-actions a i {
+                margin-right: 0;
+                font-size: 18px;
+            }
+            
+            .user-avatar {
+                margin-left: 10px;
+            }
+            
+            nav {
+                top: 94px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .breaking-news-item {
+                flex-direction: column;
+            }
+            
+            .breaking-news-item img {
+                width: 100%;
+                height: 120px;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-newspaper"></i>
+                <span>Kenya News Hub</span>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Search Kenyan news...">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="user-actions">
+                <a href="#"><i class="fas fa-bookmark"></i> <span>Saved</span></a>
+                <a href="#"><i class="fas fa-bell"></i> <span>Alerts</span></a>
+                <div class="user-avatar">ME</div>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="category active"><i class="fas fa-home"></i> Home</div>
+            <div class="category"><i class="fas fa-bolt"></i> Breaking</div>
+            <div class="category"><i class="fas fa-landmark"></i> Politics</div>
+            <div class="category"><i class="fas fa-futbol"></i> Sports</div>
+            <div class="category"><i class="fas fa-business-time"></i> Business</div>
+            <div class="category"><i class="fas fa-film"></i> Entertainment</div>
+            <div class="category"><i class="fas fa-heartbeat"></i> Health</div>
+            <div class="category"><i class="fas fa-graduation-cap"></i> Education</div>
+            <div class="category"><i class="fas fa-car"></i> Technology</div>
+            <div class="category"><i class="fas fa-globe-africa"></i> World</div>
+        </div>
+    </nav>
+    
+    <main>
+        <div class="content-area">
+            <section class="breaking-news">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-bolt"></i> Breaking News in Kenya</h2>
+                    <a href="#" class="see-all">See all <i class="fas fa-chevron-right"></i></a>
+                </div>
+                
+                <div class="breaking-news-item" data-url="https://www.citizen.digital/news/politics/ruto-announces-reforms-456789">
+                    <img src="https://www.citizen.digital/resource/image/4309326/landscape_ratio16x9/800/450/kenya_politics.jpg" alt="Breaking News">
+                    <div class="breaking-news-content">
+                        <h3>Ruto announces new economic reforms amid rising public pressure</h3>
+                        <div class="breaking-news-meta">
+                            <span><i class="far fa-clock"></i> 15 min ago</span>
+                            <span><i class="fas fa-newspaper"></i> Citizen Digital</span>
+                            <span><i class="far fa-eye"></i> 24.5K views</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="breaking-news-item" data-url="https://www.the-star.co.ke/sports/football/2024/01/15/harambee-stars-qualify-afcon">
+                    <img src="https://www.the-star.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/sports_news.jpg" alt="Breaking News">
+                    <div class="breaking-news-content">
+                        <h3>Harambee Stars qualify for AFCON after dramatic penalty shootout</h3>
+                        <div class="breaking-news-meta">
+                            <span><i class="far fa-clock"></i> 1 hour ago</span>
+                            <span><i class="fas fa-newspaper"></i> The Star</span>
+                            <span><i class="far fa-eye"></i> 18.2K views</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="breaking-news-item" data-url="https://www.nation.africa/kenya/business/kenyan-shilling-gains-against-dollar-456789">
+                    <img src="https://www.nation.africa/resource/image/4309326/landscape_ratio16x9/800/450/business_news.jpg" alt="Breaking News">
+                    <div class="breaking-news-content">
+                        <h3>Kenyan shilling gains against dollar as CBK intervenes in forex market</h3>
+                        <div class="breaking-news-meta">
+                            <span><i class="far fa-clock"></i> 2 hours ago</span>
+                            <span><i class="fas fa-newspaper"></i> Daily Nation</span>
+                            <span><i class="far fa-eye"></i> 12.7K views</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="breaking-news">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-star"></i> Recommended For You</h2>
+                    <a href="#" class="see-all">Refresh <i class="fas fa-sync-alt"></i></a>
+                </div>
+                
+                <div class="news-grid">
+                    <article class="news-card" data-url="https://www.standardmedia.co.ke/politics/article/2001465769/raila-2027-strategy">
+                        <img src="https://www.standardmedia.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/politics_news.jpg" alt="News Image">
+                        <div class="news-content">
+                            <span class="news-category">Politics</span>
+                            <h3 class="news-title">Raila announces new strategy ahead of 2027 elections</h3>
+                            <p class="news-excerpt">ODM leader Raila Odinga has unveiled a new political strategy that analysts say could reshape Kenya's political landscape.</p>
+                            <div class="news-meta">
+                                <div class="news-source">
+                                    <img src="https://www.standardmedia.co.ke/favicon.ico" alt="Source Logo">
+                                    <span>The Standard</span>
+                                </div>
+                                <span>3 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="news-card" data-url="https://www.tuko.co.ke/entertainment/celebrities/456789-bahati-diana-reality-show">
+                        <img src="https://www.tuko.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/entertainment_news.jpg" alt="News Image">
+                        <div class="news-content">
+                            <span class="news-category">Entertainment</span>
+                            <h3 class="news-title">Bahati and Diana Marua announce new reality show</h3>
+                            <p class="news-excerpt">The celebrity couple will star in a new show documenting their family life, set to premiere next month on Showmax.</p>
+                            <div class="news-meta">
+                                <div class="news-source">
+                                    <img src="https://www.tuko.co.ke/favicon.ico" alt="Source Logo">
+                                    <span>Tuko.co.ke</span>
+                                </div>
+                                <span>5 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="news-card" data-url="https://www.mpasho.co.ke/gossip/456789-celebrity-couple-splits">
+                        <img src="https://www.mpasho.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/gossip_news.jpg" alt="News Image">
+                        <div class="news-content">
+                            <span class="news-category">Gossip</span>
+                            <h3 class="news-title">Celebrity couple splits after leaked WhatsApp messages</h3>
+                            <p class="news-excerpt">The entertainment industry is abuzz with news of a high-profile breakup following leaked private conversations.</p>
+                            <div class="news-meta">
+                                <div class="news-source">
+                                    <img src="https://www.mpasho.co.ke/favicon.ico" alt="Source Logo">
+                                    <span>Mpasho</span>
+                                </div>
+                                <span>7 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="news-card" data-url="https://www.peopledaily.co.ke/health/456789-malaria-vaccine-kenya">
+                        <img src="https://www.peopledaily.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/health_news.jpg" alt="News Image">
+                        <div class="news-content">
+                            <span class="news-category">Health</span>
+                            <h3 class="news-title">New malaria vaccine to be rolled out in 5 counties</h3>
+                            <p class="news-excerpt">The Ministry of Health announces pilot program for new WHO-approved malaria vaccine targeting high-risk areas.</p>
+                            <div class="news-meta">
+                                <div class="news-source">
+                                    <img src="https://www.peopledaily.co.ke/favicon.ico" alt="Source Logo">
+                                    <span>People Daily</span>
+                                </div>
+                                <span>9 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="news-card" data-url="https://www.k24tv.co.ke/business/456789-safaricom-mpesa-new-features">
+                        <img src="https://www.k24tv.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/business_news.jpg" alt="News Image">
+                        <div class="news-content">
+                            <span class="news-category">Business</span>
+                            <h3 class="news-title">Safaricom announces new M-Pesa features to counter Fintech rivals</h3>
+                            <p class="news-excerpt">The telco giant unveils enhanced loan products and merchant services in response to growing competition.</p>
+                            <div class="news-meta">
+                                <div class="news-source">
+                                    <img src="https://www.k24tv.co.ke/favicon.ico" alt="Source Logo">
+                                    <span>K24</span>
+                                </div>
+                                <span>12 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="news-card" data-url="https://www.gafla.co.ke/entertainment/456789-kenyan-celebrities-expensive-cars">
+                        <img src="https://www.gafla.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/entertainment_news.jpg" alt="News Image">
+                        <div class="news-content">
+                            <span class="news-category">Entertainment</span>
+                            <h3 class="news-title">10 Kenyan celebrities with the most expensive cars in 2024</h3>
+                            <p class="news-excerpt">From customized Range Rovers to bulletproof Mercedes, see which stars are driving Kenya's most luxurious vehicles.</p>
+                            <div class="news-meta">
+                                <div class="news-source">
+                                    <img src="https://www.gafla.co.ke/favicon.ico" alt="Source Logo">
+                                    <span>Gafla</span>
+                                </div>
+                                <span>1 day ago</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            
+            <section class="breaking-news">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-chart-line"></i> Trending in Business</h2>
+                    <a href="#" class="see-all">See all <i class="fas fa-chevron-right"></i></a>
+                </div>
+                
+                <div class="news-grid">
+                    <article class="news-card" data-url="https://www.the-star.co.ke/news/business/2024-01-15-cbk-raises-lending-rate">
+                        <img src="https://www.the-star.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/business_news2.jpg" alt="News Image">
+                        <div class="news-content">
+                            <span class="news-category">Economy</span>
+                            <h3 class="news-title">CBK raises base lending rate to 13% to curb inflation</h3>
+                            <p class="news-excerpt">The Central Bank takes aggressive action against rising inflation, signaling tougher times for borrowers.</p>
+                            <div class="news-meta">
+                                <div class="news-source">
+                                    <img src="https://www.the-star.co.ke/favicon.ico" alt="Source Logo">
+                                    <span>The Star</span>
+                                </div>
+                                <span>4 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="news-card" data-url="https://www.ktnnews.co.ke/technology/456789-safaricom-google-cloud">
+                        <img src="https://www.ktnnews.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/technology_news.jpg" alt="News Image">
+                        <div class="news-content">
+                            <span class="news-category">Technology</span>
+                            <h3 class="news-title">Safaricom, Google partner to launch Kenya's first cloud region</h3>
+                            <p class="news-excerpt">The partnership will provide local businesses with faster access to cloud services and data storage.</p>
+                            <div class="news-meta">
+                                <div class="news-source">
+                                    <img src="https://www.ktnnews.co.ke/favicon.ico" alt="Source Logo">
+                                    <span>KTN News</span>
+                                </div>
+                                <span>8 hours ago</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </div>
+        
+        <div class="sidebar">
+            <section class="ai-recommendation">
+                <div class="ai-badge">AI PICK</div>
+                <h3><i class="fas fa-robot"></i> Based On Your Interests</h3>
+                
+                <div class="recommended-article" data-url="https://www.the-source.co.ke/business/456789-kenyan-startups-funding">
+                    <img src="https://www.the-source.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/technology_news.jpg" alt="Recommended Article">
+                    <div class="recommended-content">
+                        <h4>How Kenyan startups raised Sh50 billion in 2023</h4>
+                        <div class="recommended-meta">The Source · 3 hours ago</div>
+                    </div>
+                </div>
+                
+                <div class="recommended-article" data-url="https://www.kbc.co.ke/politics/456789-ruto-cabinet-reshuffle">
+                    <img src="https://www.kbc.co.ke/resource/image/4309326/landscape_ratio16x9/800/450/politics_news.jpg" alt="Recommended Article">
+                    <div class="recommended-content">
+                        <h4>Analysis: How Ruto's cabinet reshuffle affects 2027 politics</h4>
+                        <div class="recommended-meta">KBC · Yesterday</div>
+                    </div>
+                </div>
+                
+                <div class="recommended-article" data-url="https://www.nation.africa/sports/athletics/456789-kenyan-athletes-dominance">
+                    <img src="https://www.nation.africa/resource/image/4309326/landscape_ratio16x9/800/450/sports_news.jpg" alt="Recommended Article">
+                    <div class="recommended-content">
+                        <h4>Why Kenyan athletes continue to dominate world marathons</h4>
+                        <div class="recommended-meta">Daily Nation · 2 days ago</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="trending-topics">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-fire"></i> Trending in Kenya</h2>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-number">1</div>
+                    <div class="topic-content">
+                        <h4>#FinanceBill2024</h4>
+                        <div class="topic-meta">245K posts</div>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-number">2</div>
+                    <div class="topic-content">
+                        <h4>#HarambeeStars</h4>
+                        <div class="topic-meta">189K posts</div>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-number">3</div>
+                    <div class="topic-content">
+                        <h4>#NairobiFloods</h4>
+                        <div class="topic-meta">156K posts</div>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-number">4</div>
+                    <div class="topic-content">
+                        <h4>#KOT</h4>
+                        <div class="topic-meta">132K posts</div>
+                    </div>
+                </div>
+                
+                <div class="topic-item">
+                    <div class="topic-number">5</div>
+                    <div class="topic-content">
+                        <h4>#KenyaAt60</h4>
+                        <div class="topic-meta">98K posts</div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="weather-widget">
+                <div class="weather-header">
+                    <div class="weather-location">Nairobi, Kenya</div>
+                    <div class="weather-refresh"><i class="fas fa-sync-alt"></i></div>
+                </div>
+                
+                <div class="weather-main">
+                    <div class="weather-temp">22°</div>
+                    <div class="weather-icon"><i class="fas fa-cloud-sun"></i></div>
+                </div>
+                
+                <div class="weather-desc">Partly cloudy</div>
+                
+                <div class="weather-details">
+                    <div class="weather-detail"><i class="fas fa-wind"></i> 8 km/h</div>
+                    <div class="weather-detail"><i class="fas fa-tint"></i> 65%</div>
+                    <div class="weather-detail"><i class="fas fa-arrow-up"></i> 24°</div>
+                    <div class="weather-detail"><i class="fas fa-arrow-down"></i> 18°</div>
+                </div>
+            </section>
+            
+            <section class="newsletter">
+                <h3>Kenya News Digest</h3>
+                <p>Get top stories from all Kenyan sources daily</p>
+                <input type="email" placeholder="Your email address">
+                <button type="button">Subscribe</button>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>News Sources</h3>
+                <ul>
+                    <li><a href="https://www.citizen.digital" target="_blank">Citizen Digital</a></li>
+                    <li><a href="https://www.the-star.co.ke" target="_blank">The Star</a></li>
+                    <li><a href="https://www.nation.africa" target="_blank">Daily Nation</a></li>
+                    <li><a href="https://www.standardmedia.co.ke" target="_blank">The Standard</a></li>
+                    <li><a href="https://www.kbc.co.ke" target="_blank">KBC</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>More Sources</h3>
+                <ul>
+                    <li><a href="https://www.ktnnews.co.ke" target="_blank">KTN News</a></li>
+                    <li><a href="https://www.tuko.co.ke" target="_blank">Tuko.co.ke</a></li>
+                    <li><a href="https://www.mpasho.co.ke" target="_blank">Mpasho</a></li>
+                    <li><a href="https://www.gafla.co.ke" target="_blank">Gafla</a></li>
+                    <li><a href="https://www.k24tv.co.ke" target="_blank">K24</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Advertise</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2023 Kenya News Hub. All rights reserved. Aggregating news from top Kenyan sources.<br>
+            Powered by AI technology to personalize your news experience.
+        </div>
+    </footer>
+
+    <script>
+        // Make all clickable elements work
+        document.addEventListener('DOMContentLoaded', function() {
+            // News cards and breaking news items
+            const clickableElements = document.querySelectorAll(
+                '.news-card, .breaking-news-item, .recommended-article'
+            );
+            
+            clickableElements.forEach(element => {
+                // Add pointer cursor
+                element.style.cursor = 'pointer';
+                
+                // Add click handler
+                element.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on a link inside the element
+                    if (e.target.tagName === 'A' || e.target.closest('a')) {
+                        return;
+                    }
+                    
+                    const url = this.getAttribute('data-url');
+                    if (url && url.startsWith('http')) {
+                        window.open(url, '_blank');
+                    }
+                });
+                
+                // Add hover effects
+                element.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                    this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                });
+            });
+            
+            // Image error handling
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = 'https://via.placeholder.com/300x200?text=Image+Not+Available';
+                    this.alt = 'Image not available';
+                });
+            });
+            
+            // Newsletter subscription
+            const newsletterButton = document.querySelector('.newsletter button');
+            newsletterButton.addEventListener('click', function() {
+                const email = document.querySelector('.newsletter input').value;
+                if (email && email.includes('@')) {
+                    this.textContent = 'Subscribing...';
+                    
+                    setTimeout(() => {
+                        this.textContent = 'Subscribed!';
+                        console.log(`Added ${email} to Kenya News Digest`);
+                        
+                        setTimeout(() => {
+                            this.textContent = 'Subscribe';
+                            document.querySelector('.newsletter input').value = '';
+                        }, 2000);
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
